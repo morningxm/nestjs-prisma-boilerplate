@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Bookmark, BookmarkSchema } from '@/schemas/bookmark.schema';
 
 import { BookmarkDAO } from './bookmark.dao';
+import { BookmarkService } from './bookmark.service';
 
 @Module({
   imports: [
@@ -11,6 +12,6 @@ import { BookmarkDAO } from './bookmark.dao';
       { name: Bookmark.name, schema: BookmarkSchema },
     ]),
   ],
-  providers: [BookmarkDAO],
+  providers: [BookmarkDAO, BookmarkService],
 })
 export class BookmarkModule {}

@@ -22,6 +22,10 @@ export abstract class DAO<T> {
     return this.model.findOne(filter, null, options).lean();
   }
 
+  async findById(id: string, options?: QueryOptions) {
+    return this.model.findById(id, null, options).lean();
+  }
+
   async updateOne(
     filter: FilterQuery<T>,
     update: UpdateQuery<T>,
@@ -33,7 +37,18 @@ export abstract class DAO<T> {
     });
   }
 
+  async updateById(id: string, update: UpdateQuery<T>, options?: QueryOptions) {
+    return this.model.findByIdAndUpdate(id, update, {
+      new: true,
+      ...options,
+    });
+  }
+
   async deleteOne(filter: FilterQuery<T>, options?: QueryOptions) {
     return this.model.findOneAndDelete(filter, options);
+  }
+
+  async deleteById(id: string, options?: QueryOptions) {
+    return this.model.findByIdAndDelete(id, options);
   }
 }

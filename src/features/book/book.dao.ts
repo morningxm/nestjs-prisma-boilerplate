@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, QueryOptions } from 'mongoose';
 
 import { DAO } from '@/core/database/database.dao';
 import { Book, BookDocument } from '@/schemas/book.schema';
