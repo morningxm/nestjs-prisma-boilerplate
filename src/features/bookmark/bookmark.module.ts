@@ -5,6 +5,7 @@ import { Bookmark, BookmarkSchema } from '@/schemas/bookmark.schema';
 
 import { BookmarkDAO } from './bookmark.dao';
 import { BookmarkService } from './bookmark.service';
+import { BookmarkController } from './bookmark.controller';
 
 @Module({
   imports: [
@@ -13,5 +14,6 @@ import { BookmarkService } from './bookmark.service';
     ]),
   ],
   providers: [BookmarkDAO, BookmarkService],
+  controllers: [BookmarkController],
 })
 export class BookmarkModule {}
