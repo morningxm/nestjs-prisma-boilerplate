@@ -13,10 +13,7 @@ export class BookService {
     return this.dao.create(book);
   }
 
-  async find(
-    filter: FilterQuery<BookDocument>,
-    options?: QueryOptions<BookDocument>,
-  ) {
+  async find(filter: FilterQuery<BookDocument>, options?: QueryOptions<BookDocument>) {
     return this.dao.find(filter, options);
   }
 
@@ -24,11 +21,7 @@ export class BookService {
     return this.dao.findById(id, options);
   }
 
-  async updateOne(
-    id: string,
-    book: Partial<Book>,
-    options?: QueryOptions<BookDocument>,
-  ) {
+  async updateOne(id: string, book: Partial<Book>, options?: QueryOptions<BookDocument>) {
     return this.dao.updateById(id, book, options);
   }
 

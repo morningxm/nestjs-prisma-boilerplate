@@ -1,6 +1,6 @@
-import 'reflect-metadata';
-import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
+import 'dotenv/config';
+import 'reflect-metadata';
 
 import { envConfig } from '@/config/env.config';
 
