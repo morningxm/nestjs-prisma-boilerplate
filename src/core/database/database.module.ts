@@ -1,15 +1,19 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { envConfig } from '@/config/env.config';
+import { ENV } from '@/enum/env.enum';
 
 @Module({
   imports: [
     MongooseModule.forRootAsync({
-      useFactory: () => {
-        const host = envConfig.DATABASE_HOST;
-        const port = envConfig.DATABASE_PORT;
-        const name = envConfig.DATABASE_NAME;
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => {
+        const host = configService.get(ENV.MONGODB_HOST);
+        const port = configService.get(ENV.MONGODB_PORT);
+        const name = configService.get(ENV.MONGODB_NAME);
+
         return {
           uri: `mongodb://${host}:${port}/${name}`,
           connectionFactory: (connection) => {
