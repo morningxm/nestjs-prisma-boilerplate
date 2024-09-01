@@ -3,6 +3,7 @@ const assetsSuffix = 'svg|png|css|scss';
 module.exports = {
   arrowParens: 'always',
   singleQuote: true,
+  trailingComma: 'all',
   tabWidth: 2,
   semi: true,
   printWidth: 120,
