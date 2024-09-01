@@ -8,8 +8,6 @@ export class PokemonController {
   constructor(private readonly service: PokemonService) {}
 
   @UseInterceptors(CacheInterceptor)
-  // @CacheKey('get-pokemon')
-  @CacheTTL(10) // override TTL to 30 seconds
   @Get(':id')
   async getPokemon(@Param('id') id: number) {
     return await this.service.getPokemon(+id);

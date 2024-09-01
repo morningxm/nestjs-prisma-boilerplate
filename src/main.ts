@@ -1,13 +1,17 @@
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import 'dotenv/config';
 import 'reflect-metadata';
 
-import { envConfig } from '@/config/env.config';
-
 import { AppModule } from './app.module';
+import { ENV } from './enum/env.enum';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(envConfig.APP_PORT || 3000);
+
+  const configService = app.get(ConfigService);
+  const port = configService.get(ENV.APP_PORT);
+
+  await app.listen(port);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
