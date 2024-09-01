@@ -13,10 +13,7 @@ export class BookmarkService {
     return this.dao.create(book);
   }
 
-  async find(
-    filter: FilterQuery<BookmarkDocument>,
-    options?: QueryOptions<BookmarkDocument>,
-  ) {
+  async find(filter: FilterQuery<BookmarkDocument>, options?: QueryOptions<BookmarkDocument>) {
     return this.dao.find(filter, options);
   }
 
@@ -24,11 +21,7 @@ export class BookmarkService {
     return this.dao.findById(id, options);
   }
 
-  async updateOne(
-    id: string,
-    book: Partial<Bookmark>,
-    options?: QueryOptions<BookmarkDocument>,
-  ) {
+  async updateOne(id: string, book: Partial<Bookmark>, options?: QueryOptions<BookmarkDocument>) {
     return this.dao.updateById(id, book, options);
   }
 

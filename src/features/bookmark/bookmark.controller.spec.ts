@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
 import { BookmarkController } from './bookmark.controller';
 
 describe('BookmarkController', () => {

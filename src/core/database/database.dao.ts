@@ -1,10 +1,4 @@
-import {
-  FilterQuery,
-  Model,
-  QueryOptions,
-  SaveOptions,
-  UpdateQuery,
-} from 'mongoose';
+import { FilterQuery, Model, QueryOptions, SaveOptions, UpdateQuery } from 'mongoose';
 
 export abstract class DAO<T> {
   constructor(protected readonly model: Model<T>) {}
@@ -26,11 +20,7 @@ export abstract class DAO<T> {
     return this.model.findById(id, null, options).lean();
   }
 
-  async updateOne(
-    filter: FilterQuery<T>,
-    update: UpdateQuery<T>,
-    options?: QueryOptions,
-  ) {
+  async updateOne(filter: FilterQuery<T>, update: UpdateQuery<T>, options?: QueryOptions) {
     return this.model.findOneAndUpdate(filter, update, {
       new: true,
       ...options,
