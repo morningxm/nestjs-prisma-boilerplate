@@ -11,9 +11,15 @@ export enum ENV {
 
   REDIS_HOST = 'REDIS_HOST',
   REDIS_PORT = 'REDIS_PORT',
+
+  LOGGER = 'LOGGER',
 }
 
 export enum CACHE_TYPE {
   REDIS = 'redis',
   MEMORY = 'memory',
+}
+
+export enum LOGGER_TYPE {
+  WINSTON = 'winston',
 }

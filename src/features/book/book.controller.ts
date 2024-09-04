@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 
-import { BookDto } from '@/dto/book.dto';
+import { BookDto } from '@/dtos';
 
 import { BookService } from './book.service';
 
