@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Book {
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+  author          String
+  genre           String?
+  publicationYear DateTime   @default(now())
+  bookmarks       Bookmark[]
+
+  @@map("books")
+}
+
+model Bookmark {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  bookId     String  @db.ObjectId
+  book       Book?   @relation(fields: [bookId], references: [id])
+  pageNumber Int
+  notes      String?
+
+  @@map("bookmarks")
+}

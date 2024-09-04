@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 
-import { Bookmark } from '@/schemas/bookmark.schema';
+import { BookmarkDto } from '@/dto/bookmark.dto';
 
 import { BookmarkService } from './bookmark.service';
 
@@ -19,12 +19,12 @@ export class BookmarkController {
   }
 
   @Post()
-  async create(@Body() bookmark: Bookmark) {
+  async create(@Body() bookmark: BookmarkDto) {
     return this.bookmarkService.save(bookmark);
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() bookmark: Partial<Bookmark>) {
+  async update(@Param('id') id: string, @Body() bookmark: Partial<BookmarkDto>) {
     return this.bookmarkService.updateOne(id, bookmark);
   }
 
