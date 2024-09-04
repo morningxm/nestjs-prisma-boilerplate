@@ -19,6 +19,7 @@ export class PokemonService {
 
     const { data } = await this.httpService.axiosRef.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
     await this.cacheService.set(id.toString(), data);
+    console.log(`returning data from web: ${data.name}`);
 
     return await `${data.name}`;
   }
