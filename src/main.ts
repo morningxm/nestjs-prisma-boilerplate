@@ -1,13 +1,13 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { WinstonLogger, WinstonModule } from 'nest-winston';
+import { WinstonModule } from 'nest-winston';
 import 'reflect-metadata';
 import { format, transports } from 'winston';
 import 'winston-daily-rotate-file';
 
 import { AppModule } from './app.module';
-import { ENV, LOGGER_TYPE } from './enums/env.enum';
+import { ENV, LOGGER_TYPE } from './enums';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

@@ -1,4 +1,4 @@
-import { ENV } from '@/enums/env.enum';
+import { ENV } from '@/enums';
 
 export const Configuration = () => ({
   [ENV.APP_PORT]: parseInt(process.env.APP_PORT) || 3000,

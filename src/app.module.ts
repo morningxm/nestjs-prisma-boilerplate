@@ -7,7 +7,7 @@ import { Configuration } from './config';
 import { CoreModule } from './core/core.module';
 import { CACHE_TYPE, ENV } from './enums';
 import { FeaturesModule } from './features/features.module';
-import { RequestLoggerMiddleware } from './middlewares/request-logger.middleware';
+import { RequestLoggerMiddleware } from './middlewares';
 
 @Module({
   imports: [
