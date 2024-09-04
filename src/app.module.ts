@@ -1,12 +1,13 @@
 import { CacheModule } from '@nestjs/cache-manager';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { redisStore } from 'cache-manager-redis-yet';
 
 import { Configuration } from './config';
 import { CoreModule } from './core/core.module';
-import { CACHE_TYPE, ENV } from './enum';
+import { CACHE_TYPE, ENV } from './enums';
 import { FeaturesModule } from './features/features.module';
+import { RequestLoggerMiddleware } from './middlewares';
 
 @Module({
   imports: [
@@ -39,4 +40,8 @@ import { FeaturesModule } from './features/features.module';
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RequestLoggerMiddleware).forRoutes('*');
+  }
+}

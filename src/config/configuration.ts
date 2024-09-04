@@ -1,4 +1,4 @@
-import { ENV } from '@/enum/env.enum';
+import { ENV } from '@/enums';
 
 export const Configuration = () => ({
   [ENV.APP_PORT]: parseInt(process.env.APP_PORT) || 3000,
@@ -11,4 +11,6 @@ export const Configuration = () => ({
 
   [ENV.REDIS_HOST]: process.env.REDIS_HOST || '127.0.0.1',
   [ENV.REDIS_PORT]: parseInt(process.env.REDIS_PORT) || 6379,
+
+  [ENV.LOGGER]: parseInt(process.env.LOGGER) || 'winston',
 });

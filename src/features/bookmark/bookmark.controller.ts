@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 
-import { BookmarkDto } from '@/dto/bookmark.dto';
+import { BookmarkDto } from '@/dtos';
 
 import { BookmarkService } from './bookmark.service';
 
