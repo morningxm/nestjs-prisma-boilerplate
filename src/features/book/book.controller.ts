@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 
 import { BookDto } from '@/dto/book.dto';
 
@@ -15,7 +15,11 @@ export class BookController {
 
   @Get(':id')
   async getById(@Param('id') id: string) {
-    return this.bookService.findOne(id);
+    const data = await this.bookService.findOne(id);
+    if (!data) {
+      throw new NotFoundException();
+    }
+    return data;
   }
 
   @Post()
@@ -28,8 +32,12 @@ export class BookController {
     return this.bookService.updateOne(id, book);
   }
 
-  // @Delete(':id')
-  // async delete(@Param('id') id: string) {
-  //   return this.bookService.deleteOne(id);
-  // }
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    try {
+      return await this.bookService.deleteOne(id);
+    } catch (err) {
+      throw new NotFoundException();
+    }
+  }
 }

@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import { IsDate, IsEnum, IsOptional, IsString, MaxDate, MaxLength } from 'class-validator';
 
 enum Genre {
@@ -21,6 +22,7 @@ export class BookDto {
   @IsOptional()
   genre?: string;
 
+  @Transform(({ value }) => new Date(value))
   @IsDate()
   @MaxDate(() => new Date())
   @IsOptional()

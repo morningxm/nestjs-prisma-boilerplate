@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 
 import { BookmarkDto } from '@/dto/bookmark.dto';
 
@@ -15,7 +15,11 @@ export class BookmarkController {
 
   @Get(':id')
   async getById(@Param('id') id: string) {
-    return this.bookmarkService.findOne(id);
+    const data = await this.bookmarkService.findOne(id);
+    if (!data) {
+      throw new NotFoundException();
+    }
+    return data;
   }
 
   @Post()
@@ -30,6 +34,10 @@ export class BookmarkController {
 
   @Delete(':id')
   async delete(@Param('id') id: string) {
-    return this.bookmarkService.deleteOne(id);
+    try {
+      return await this.bookmarkService.deleteOne(id);
+    } catch (err) {
+      throw new NotFoundException();
+    }
   }
 }
