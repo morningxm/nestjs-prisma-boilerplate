@@ -16,7 +16,11 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer()).get('/').expect(200).expect('Hello World!');
+  afterAll(async () => {
+    await app.close(); // Ensure application is closed after all tests
+  });
+
+  it('/books (GET)', () => {
+    return request(app.getHttpServer()).get('/books').expect(200);
   });
 });

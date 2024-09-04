@@ -1,5 +1,4 @@
-import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
-import { Controller, Get, Param, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 
 import { PokemonService } from './pokemon.service';
 
