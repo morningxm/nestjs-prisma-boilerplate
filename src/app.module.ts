@@ -5,7 +5,7 @@ import { redisStore } from 'cache-manager-redis-yet';
 
 import { Configuration } from './config';
 import { CoreModule } from './core/core.module';
-import { ENV } from './enums';
+import { CACHE_TYPE, ENV } from './enums';
 import { FeaturesModule } from './features/features.module';
 import { RequestLoggerMiddleware } from './middlewares/request-logger.middleware';
 
@@ -19,7 +19,7 @@ import { RequestLoggerMiddleware } from './middlewares/request-logger.middleware
       useFactory: async (configService: ConfigService) => {
         const cacheMode = configService.get(ENV.CACHE_MODE);
 
-        return cacheMode === 'redis'
+        return cacheMode === CACHE_TYPE.REDIS
           ? {
               store: await redisStore({
                 socket: {
