@@ -7,7 +7,6 @@ import { PokemonService } from './pokemon.service';
 export class PokemonController {
   constructor(private readonly service: PokemonService) {}
 
-  @UseInterceptors(CacheInterceptor)
   @Get(':id')
   async getPokemon(@Param('id') id: number) {
     return await this.service.getPokemon(+id);
