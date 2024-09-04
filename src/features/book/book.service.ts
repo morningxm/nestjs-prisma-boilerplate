@@ -1,31 +1,59 @@
 import { Injectable } from '@nestjs/common';
-import { FilterQuery, QueryOptions } from 'mongoose';
+import { type Book, Prisma } from '@prisma/client';
 
-import { Book, BookDocument } from '@/schemas/book.schema';
-
-import { BookDAO } from './book.dao';
+import { PrismaService } from '@/core/database/prisma.service';
 
 @Injectable()
 export class BookService {
-  constructor(private readonly dao: BookDAO) {}
+  constructor(private prisma: PrismaService) {}
 
-  async save(book: Book) {
-    return this.dao.create(book);
+  async find(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.BookWhereUniqueInput;
+    where?: Prisma.BookWhereInput;
+    orderBy?: Prisma.BookOrderByWithRelationInput;
+  }): Promise<Book[]> {
+    const { skip, take, cursor, where, orderBy } = params;
+    return this.prisma.book.findMany({
+      skip,
+      take,
+      cursor,
+      where,
+      orderBy,
+      include: {
+        bookmarks: true,
+      },
+    });
   }
 
-  async find(filter: FilterQuery<BookDocument>, options?: QueryOptions<BookDocument>) {
-    return this.dao.find(filter, options);
+  async findOne(id: string): Promise<Book | null> {
+    return this.prisma.book.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        bookmarks: true,
+      },
+    });
   }
 
-  async findOne(id: string, options?: QueryOptions<BookDocument>) {
-    return this.dao.findById(id, options);
+  async save(data: Prisma.BookCreateInput): Promise<Book> {
+    return this.prisma.book.create({
+      data,
+    });
   }
 
-  async updateOne(id: string, book: Partial<Book>, options?: QueryOptions<BookDocument>) {
-    return this.dao.updateById(id, book, options);
+  async updateOne(id: string, data: Partial<Book>) {
+    return this.prisma.book.update({
+      where: { id },
+      data,
+    });
   }
 
-  async deleteOne(id: string, options?: QueryOptions<BookDocument>) {
-    return this.dao.deleteById(id, options);
+  async deleteOne(id: string) {
+    return this.prisma.book.delete({
+      where: { id },
+    });
   }
 }

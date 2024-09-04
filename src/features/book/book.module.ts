@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 
-import { Book, BookSchema } from '@/schemas/book.schema';
+import { DatabaseModule } from '@/core/database/database.module';
+import { PrismaService } from '@/core/database/prisma.service';
 
 import { BookController } from './book.controller';
-import { BookDAO } from './book.dao';
 import { BookService } from './book.service';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Book.name, schema: BookSchema }])],
-  providers: [BookDAO, BookService],
+  imports: [DatabaseModule],
+  providers: [PrismaService, BookService],
   controllers: [BookController],
 })
 export class BookModule {}

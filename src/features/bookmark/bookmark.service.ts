@@ -1,31 +1,59 @@
 import { Injectable } from '@nestjs/common';
-import { FilterQuery, QueryOptions } from 'mongoose';
+import { Bookmark, Prisma } from '@prisma/client';
 
-import { Bookmark, BookmarkDocument } from '@/schemas/bookmark.schema';
-
-import { BookmarkDAO } from './bookmark.dao';
+import { PrismaService } from '@/core/database/prisma.service';
 
 @Injectable()
 export class BookmarkService {
-  constructor(private readonly dao: BookmarkDAO) {}
+  constructor(private prisma: PrismaService) {}
 
-  async save(book: Bookmark) {
-    return this.dao.create(book);
+  async find(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.BookmarkWhereUniqueInput;
+    where?: Prisma.BookmarkWhereInput;
+    orderBy?: Prisma.BookmarkOrderByWithRelationInput;
+  }): Promise<Bookmark[]> {
+    const { skip, take, cursor, where, orderBy } = params;
+    return this.prisma.bookmark.findMany({
+      skip,
+      take,
+      cursor,
+      where,
+      orderBy,
+      include: {
+        book: true,
+      },
+    });
   }
 
-  async find(filter: FilterQuery<BookmarkDocument>, options?: QueryOptions<BookmarkDocument>) {
-    return this.dao.find(filter, options);
+  async findOne(id: string): Promise<Bookmark | null> {
+    return this.prisma.bookmark.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        book: true,
+      },
+    });
   }
 
-  async findOne(id: string, options?: QueryOptions<BookmarkDocument>) {
-    return this.dao.findById(id, options);
+  async save(data: Prisma.BookmarkCreateInput): Promise<Bookmark> {
+    return this.prisma.bookmark.create({
+      data,
+    });
   }
 
-  async updateOne(id: string, book: Partial<Bookmark>, options?: QueryOptions<BookmarkDocument>) {
-    return this.dao.updateById(id, book, options);
+  async updateOne(id: string, data: Partial<Bookmark>) {
+    return this.prisma.bookmark.update({
+      where: { id },
+      data,
+    });
   }
 
-  async deleteOne(id: string, options?: QueryOptions<BookmarkDocument>) {
-    return this.dao.deleteById(id, options);
+  async deleteOne(id: string) {
+    return this.prisma.bookmark.delete({
+      where: { id },
+    });
   }
 }
