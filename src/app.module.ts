@@ -3,11 +3,11 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { redisStore } from 'cache-manager-redis-yet';
 
-import { Configuration } from './config';
-import { CoreModule } from './core/core.module';
-import { CACHE_TYPE, ENV } from './enums';
-import { FeaturesModule } from './features/features.module';
-import { RequestLoggerMiddleware } from './middlewares';
+import { CoreModule } from './modules/core/core.module';
+import { FeaturesModule } from './modules/features/features.module';
+import { Configuration } from './shared/config';
+import { CACHE_TYPE, ENV } from './shared/enums';
+import { RequestLoggerMiddleware } from './shared/middlewares';
 
 @Module({
   imports: [
