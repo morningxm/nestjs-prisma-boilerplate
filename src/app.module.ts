@@ -37,7 +37,7 @@ import { RequestLoggerMiddleware } from './shared/middlewares';
       },
     }),
     CoreModule,
-    AuthModule.forRoot(),
+    AuthModule,
     FeaturesModule,
     UserModule,
   ],

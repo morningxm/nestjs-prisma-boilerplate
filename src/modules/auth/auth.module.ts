@@ -10,39 +10,27 @@ import { CoreModule } from '../core/core.module';
 import { UserService } from '../user/user.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 
-@Module({})
-export class AuthModule {
-  static forRoot(): DynamicModule {
-    const JwtStrategy = {
-      provide: 'Strategy',
-      useFactory: async (userService: UserService, configService: ConfigService) => {
-        const JwtStrategy = (await import('./strategies/jwt.strategy')).JwtStrategy;
-        return new JwtStrategy(userService, configService.get(ENV.SECRET));
+@Module({
+  imports: [
+    CoreModule,
+    PassportModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => {
+        return {
+          secret: configService.get(ENV.SECRET),
+          signOptions: { expiresIn: configService.get(ENV.TOKEN_EXPIRE_IN) },
+        };
       },
-      inject: [UserService, ConfigService],
-    };
-    return {
-      module: AuthModule,
-      imports: [
-        CoreModule,
-        PassportModule,
-        JwtModule.registerAsync({
-          imports: [ConfigModule],
-          inject: [ConfigService],
-          useFactory: async (configService: ConfigService) => {
-            return {
-              secret: configService.get(ENV.SECRET),
-              signOptions: { expiresIn: configService.get(ENV.TOKEN_EXPIRE_IN) },
-            };
-          },
-        }),
-        UserModule,
-      ],
-      providers: [AuthService, LocalStrategy, JwtStrategy],
-      controllers: [AuthController],
-      exports: [AuthService, LocalStrategy, JwtStrategy],
-    };
-  }
-}
+    }),
+    UserModule,
+  ],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
+  controllers: [AuthController],
+  exports: [AuthService, LocalStrategy, JwtStrategy],
+})
+export class AuthModule {}
