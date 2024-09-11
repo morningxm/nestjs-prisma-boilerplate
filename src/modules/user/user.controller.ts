@@ -4,30 +4,38 @@ import {
   Controller,
   Delete,
   Get,
+  Header,
+  Headers,
   NotFoundException,
   Param,
   Post,
   Put,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 
-import { UserDto } from '@/shared/dtos/user.dto';
+import { UserDto } from '@/shared/dtos';
+import { JwtAuthGuard } from '@/shared/guards';
 
 import { UserService } from './user.service';
 
 @Controller('users')
+@UseGuards(JwtAuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  // @UseGuards()
   async getAll() {
     return this.userService.find({});
   }
 
   @Get(':id')
-  async getById(@Param('id') id: string) {
-    return this.userService.findOne({ id });
+  async getById(@Param('id') id: string, @Headers() req) {
+    const data = await this.userService.findOne({ id });
+    if (!data) {
+      throw new NotFoundException();
+    }
+    return data;
   }
 
   @Post()

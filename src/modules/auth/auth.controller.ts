@@ -3,12 +3,12 @@ import * as crypto from 'crypto';
 
 import { UserService } from '@/modules/user/user.service';
 
-import { AuthenticationService } from './authentication.service';
+import { AuthService } from './auth.service';
 
 @Controller('auth')
-export class AuthenticationController {
+export class AuthController {
   constructor(
-    private readonly authService: AuthenticationService,
+    private readonly authService: AuthService,
     private readonly userSerivice: UserService,
   ) {}
 

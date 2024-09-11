@@ -3,6 +3,7 @@ import { ENV } from '@/shared/enums';
 export const Configuration = () => ({
   [ENV.APP_PORT]: parseInt(process.env.APP_PORT) || 3000,
   [ENV.SECRET]: process.env.SECRET || 'SECRET',
+  [ENV.TOKEN_EXPIRE_IN]: process.env.TOKEN_EXPIRE_IN || '1h',
 
   [ENV.DATABASE_URL]: process.env.DATABASE_URL,
 

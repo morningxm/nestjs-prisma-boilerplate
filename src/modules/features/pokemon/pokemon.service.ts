@@ -1,19 +1,20 @@
 import { HttpService } from '@nestjs/axios';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 
 @Injectable()
 export class PokemonService {
   constructor(
     private readonly httpService: HttpService,
+    private readonly logger: Logger,
     @Inject(CACHE_MANAGER) private cacheService: Cache,
   ) {}
 
   async getPokemon(id: number) {
     const cachedData = await this.cacheService.get<{ name: string }>(id.toString());
     if (cachedData) {
-      console.log(`returning data from cache: ${cachedData.name}`);
+      this.logger.log(`returning data from cache: ${cachedData.name}`);
       return `${cachedData.name}`;
     }
 

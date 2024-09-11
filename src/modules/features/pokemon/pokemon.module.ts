@@ -1,10 +1,13 @@
 import { HttpService } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 
+import { CoreModule } from '@/modules/core/core.module';
+
 import { PokemonController } from './pokemon.controller';
 import { PokemonService } from './pokemon.service';
 
 @Module({
+  imports: [CoreModule],
   controllers: [PokemonController],
   providers: [
     HttpService,
