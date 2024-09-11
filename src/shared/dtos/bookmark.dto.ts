@@ -33,13 +33,15 @@ export class BookmarkDto {
     default: 'Tracy is sick',
   })
   notes?: string;
+}
 
+export class CreateBookmarkDto extends OmitType(BookmarkDto, ['id']) {}
+
+export class ExtendedBookmarkDto extends BookmarkDto {
   @IsObject()
   @ApiProperty({
     description: 'Book',
-    type: () => OmitType(BookDto, ['bookmarks']),
+    type: () => BookDto,
   })
   book: BookDto;
 }
-
-export class CreateBookmarkDto extends OmitType(BookmarkDto, ['id', 'book']) {}

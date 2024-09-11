@@ -2,12 +2,12 @@ import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } fr
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { ApiBadRequest, ApiNotFound } from '@/shared/decorators';
-import { BookmarkDto, CreateBookmarkDto } from '@/shared/dtos';
+import { BookmarkDto, CreateBookmarkDto, ExtendedBookmarkDto } from '@/shared/dtos';
 
 import { BookmarkService } from './bookmark.service';
 
 @Controller('bookmarks')
-@ApiTags('bookmarks')
+@ApiTags('Bookmarks')
 export class BookmarkController {
   constructor(private readonly bookmarkService: BookmarkService) {}
 
@@ -17,7 +17,7 @@ export class BookmarkController {
   })
   @ApiResponse({
     status: 200,
-    type: BookmarkDto,
+    type: ExtendedBookmarkDto,
     isArray: true,
   })
   async getAll() {
@@ -30,7 +30,7 @@ export class BookmarkController {
   })
   @ApiResponse({
     status: 200,
-    type: BookmarkDto,
+    type: ExtendedBookmarkDto,
   })
   @ApiNotFound()
   async getById(@Param('id') id: string) {
@@ -50,7 +50,7 @@ export class BookmarkController {
   })
   @ApiResponse({
     status: 201,
-    type: CreateBookmarkDto,
+    type: BookmarkDto,
   })
   @ApiBadRequest()
   async create(@Body() data: CreateBookmarkDto) {
@@ -66,7 +66,7 @@ export class BookmarkController {
   })
   @ApiResponse({
     status: 200,
-    type: CreateBookmarkDto,
+    type: BookmarkDto,
   })
   @ApiNotFound()
   async update(@Param('id') id: string, @Body() data: Partial<CreateBookmarkDto>) {
@@ -79,7 +79,7 @@ export class BookmarkController {
   })
   @ApiResponse({
     status: 200,
-    type: CreateBookmarkDto,
+    type: BookmarkDto,
   })
   @ApiNotFound()
   async delete(@Param('id') id: string) {

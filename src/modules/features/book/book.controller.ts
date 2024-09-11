@@ -2,12 +2,12 @@ import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } fr
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { ApiBadRequest, ApiNotFound } from '@/shared/decorators';
-import { BookDto, CreateBookDto } from '@/shared/dtos';
+import { BookDto, CreateBookDto, ExtendedBookDto } from '@/shared/dtos';
 
 import { BookService } from './book.service';
 
 @Controller('books')
-@ApiTags('books')
+@ApiTags('Books')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
@@ -17,7 +17,7 @@ export class BookController {
   })
   @ApiResponse({
     status: 200,
-    type: BookDto,
+    type: ExtendedBookDto,
     isArray: true,
   })
   async getAll() {
@@ -30,7 +30,7 @@ export class BookController {
   })
   @ApiResponse({
     status: 200,
-    type: BookDto,
+    type: ExtendedBookDto,
   })
   @ApiNotFound()
   async getById(@Param('id') id: string) {
@@ -50,7 +50,7 @@ export class BookController {
   })
   @ApiResponse({
     status: 201,
-    type: CreateBookDto,
+    type: BookDto,
   })
   @ApiBadRequest()
   async create(@Body() data: CreateBookDto) {
@@ -66,7 +66,7 @@ export class BookController {
   })
   @ApiResponse({
     status: 200,
-    type: CreateBookDto,
+    type: BookDto,
   })
   @ApiNotFound()
   async update(@Param('id') id: string, @Body() data: Partial<CreateBookDto>) {
@@ -79,7 +79,7 @@ export class BookController {
   })
   @ApiResponse({
     status: 201,
-    type: CreateBookDto,
+    type: BookDto,
   })
   @ApiNotFound()
   async delete(@Param('id') id: string) {

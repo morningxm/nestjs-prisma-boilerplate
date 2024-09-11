@@ -53,14 +53,16 @@ export class BookDto {
     description: 'Publication Year',
   })
   publicationYear?: Date;
+}
 
+export class CreateBookDto extends OmitType(BookDto, ['id']) {}
+
+export class ExtendedBookDto extends BookDto {
   @IsArray()
   @ApiProperty({
     description: 'Bookmarks',
-    type: () => OmitType(BookmarkDto, ['book']),
+    type: () => BookmarkDto,
     isArray: true,
   })
   bookmarks: Bookmark[];
 }
-
-export class CreateBookDto extends OmitType(BookDto, ['id', 'bookmarks']) {}
