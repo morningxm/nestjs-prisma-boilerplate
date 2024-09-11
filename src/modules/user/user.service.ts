@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
@@ -36,11 +36,17 @@ export class UserService {
   }
 
   async save(data: Prisma.UserCreateInput): Promise<User> {
-    console.log(data, 'data');
     data.password = bcrypt.hashSync(data.password, bcrypt.genSaltSync());
-    return this.prisma.user.create({
-      data,
-    });
+    try {
+      return await this.prisma.user.create({
+        data,
+      });
+    } catch (error) {
+      if (error.code?.toLowerCase() === 'p2002' && error.meta?.target?.toLowerCase() === 'users_email_key') {
+        throw new BadRequestException('Email already in use. Please try a different email.');
+      }
+      throw error;
+    }
   }
 
   async updateOne(where: Prisma.UserWhereUniqueInput, data: Partial<User>) {
