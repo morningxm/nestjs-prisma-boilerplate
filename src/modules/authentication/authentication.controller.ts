@@ -22,10 +22,8 @@ export class AuthenticationController {
     }
 
     const user = await this.userSerivice.findOne({
-      where: {
-        email,
-        password: crypto.createHmac('sha256', password).digest('hex'),
-      },
+      email,
+      password: crypto.createHmac('sha256', password).digest('hex'),
     });
 
     if (!user) {

@@ -35,9 +35,11 @@ model Bookmark {
 }
 
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
   email    String
   password String
+  name     String
+  gender   String?
 
   @@map("users")
 }

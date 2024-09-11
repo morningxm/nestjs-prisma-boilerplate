@@ -23,13 +23,13 @@ export class BookmarkController {
   }
 
   @Post()
-  async create(@Body() bookmark: BookmarkDto) {
-    return this.bookmarkService.save(bookmark);
+  async create(@Body() data: BookmarkDto) {
+    return this.bookmarkService.save(data);
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() bookmark: Partial<BookmarkDto>) {
-    return this.bookmarkService.updateOne({ id }, bookmark);
+  async update(@Param('id') id: string, @Body() data: Partial<BookmarkDto>) {
+    return this.bookmarkService.updateOne({ id }, data);
   }
 
   @Delete(':id')

@@ -1,18 +1,14 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { PrismaService } from '@/modules/core/database/prisma.service';
+import { DatabaseModule } from '@/modules/core/database/database.module';
 import { UserModule } from '@/modules/user/user.module';
-import { UserService } from '@/modules/user/user.service';
 import { ENV } from '@/shared/enums';
 
 import { AuthenticationController } from './authentication.controller';
 import { AuthenticationService } from './authentication.service';
 
-@Module({
-  // providers: [ConfigService, PrismaService, UserService, AuthenticationService],
-  // controllers: [AuthenticationController],
-})
+@Module({})
 export class AuthenticationModule {
   static forRoot(strategy?: 'jwt' | 'OAuth' | 'Facebook'): DynamicModule {
     strategy = strategy || 'jwt';
@@ -29,10 +25,10 @@ export class AuthenticationModule {
 
     return {
       module: AuthenticationModule,
-      imports: [UserModule],
-      providers: [ConfigService, PrismaService, UserService, AuthenticationService, strategyProvider],
+      imports: [DatabaseModule, UserModule],
+      providers: [AuthenticationService, strategyProvider],
       controllers: [AuthenticationController],
-      exports: [strategyProvider],
+      exports: [AuthenticationService, strategyProvider],
     };
   }
 }

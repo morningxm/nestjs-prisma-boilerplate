@@ -23,14 +23,13 @@ export class BookController {
   }
 
   @Post()
-  async create(@Body() book: BookDto) {
-    return this.bookService.save(book);
+  async create(@Body() data: BookDto) {
+    return this.bookService.save(data);
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() book: Partial<BookDto>) {
-    console.log(book, 'book');
-    return this.bookService.updateOne({ id }, book);
+  async update(@Param('id') id: string, @Body() data: Partial<BookDto>) {
+    return this.bookService.updateOne({ id }, data);
   }
 
   @Delete(':id')
