@@ -7,7 +7,7 @@ import { format, transports } from 'winston';
 import 'winston-daily-rotate-file';
 
 import { AppModule } from './app.module';
-import { ENV, LOGGER_TYPE } from './enums';
+import { ENV, LOGGER_TYPE } from './shared/enums';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

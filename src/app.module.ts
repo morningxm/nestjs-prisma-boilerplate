@@ -1,13 +1,15 @@
 import { CacheModule } from '@nestjs/cache-manager';
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { Logger, MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { redisStore } from 'cache-manager-redis-yet';
 
-import { Configuration } from './config';
-import { CoreModule } from './core/core.module';
-import { CACHE_TYPE, ENV } from './enums';
-import { FeaturesModule } from './features/features.module';
-import { RequestLoggerMiddleware } from './middlewares';
+import { AuthModule } from './modules/auth/auth.module';
+import { CoreModule } from './modules/core/core.module';
+import { FeaturesModule } from './modules/features/features.module';
+import { UserModule } from './modules/user/user.module';
+import { Configuration } from './shared/config';
+import { CACHE_TYPE, ENV } from './shared/enums';
+import { RequestLoggerMiddleware } from './shared/middlewares';
 
 @Module({
   imports: [
@@ -35,10 +37,12 @@ import { RequestLoggerMiddleware } from './middlewares';
       },
     }),
     CoreModule,
+    AuthModule,
     FeaturesModule,
+    UserModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [Logger],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
