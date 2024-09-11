@@ -1,37 +1,18 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
-import * as crypto from 'crypto';
+import { Controller, Post, UseGuards } from '@nestjs/common';
+import { User as UserSchema } from '@prisma/client';
 
-import { UserService } from '@/modules/user/user.service';
+import { User } from '@/shared/decorators/user.decorator';
+import { LocalAuthGuard } from '@/shared/guards';
 
 import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly userSerivice: UserService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  @HttpCode(HttpStatus.OK)
-  async login(@Body() body: any, @Res() res): Promise<any> {
-    const { email, password } = body;
-
-    if (!email || !password) {
-      return res.status(HttpStatus.BAD_REQUEST).send('Missing email or password');
-    }
-
-    const user = await this.userSerivice.findOne({
-      email,
-      password: crypto.createHmac('sha256', password).digest('hex'),
-    });
-
-    if (!user) {
-      return res.status(HttpStatus.NOT_FOUND).send('No user found with this email and password');
-    }
-
-    const result = this.authService.createToken(email);
-
-    return res.json(result);
+  @UseGuards(LocalAuthGuard)
+  async login(@User() user: UserSchema): Promise<any> {
+    return this.authService.login(user);
   }
 }

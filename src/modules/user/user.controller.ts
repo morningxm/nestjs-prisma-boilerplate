@@ -4,13 +4,11 @@ import {
   Controller,
   Delete,
   Get,
-  Header,
   Headers,
   NotFoundException,
   Param,
   Post,
   Put,
-  Request,
   UseGuards,
 } from '@nestjs/common';
 
@@ -20,16 +18,17 @@ import { JwtAuthGuard } from '@/shared/guards';
 import { UserService } from './user.service';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   async getAll() {
     return this.userService.find({});
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   async getById(@Param('id') id: string, @Headers() req) {
     const data = await this.userService.findOne({ id });
     if (!data) {
@@ -46,6 +45,7 @@ export class UserController {
   }
 
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
   async update(@Param('id') id: string, @Body() data: Partial<UserDto>) {
     if (!data) throw new BadRequestException('Missing some information');
 
@@ -53,6 +53,7 @@ export class UserController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async delete(@Param('id') id: string) {
     try {
       return await this.userService.deleteOne({ id });

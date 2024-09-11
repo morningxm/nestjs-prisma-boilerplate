@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
-import * as crypto from 'crypto';
+import * as bcrypt from 'bcrypt';
 
 import { PrismaService } from '@/modules/core/database/prisma.service';
 
@@ -36,7 +36,8 @@ export class UserService {
   }
 
   async save(data: Prisma.UserCreateInput): Promise<User> {
-    data.password = crypto.createHmac('sha256', data.password).digest('hex');
+    console.log(data, 'data');
+    data.password = bcrypt.hashSync(data.password, bcrypt.genSaltSync());
     return this.prisma.user.create({
       data,
     });
