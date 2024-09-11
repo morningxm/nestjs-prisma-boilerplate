@@ -14,4 +14,9 @@ export const Configuration = () => ({
   [ENV.REDIS_PORT]: parseInt(process.env.REDIS_PORT) || 6379,
 
   [ENV.LOGGER]: parseInt(process.env.LOGGER) || 'winston',
+
+  [ENV.SWAGGER_TITLE]: parseInt(process.env.SWAGGER_TITLE) || 'Nest.js boilerplate',
+  [ENV.SWAGGER_DESCRIPTION]: parseInt(process.env.SWAGGER_DESCRIPTION) || 'Nest.js boilerplate',
+  [ENV.SWAGGER_VERSION]: parseInt(process.env.SWAGGER_VERSION) || '1.0',
+  [ENV.SWAGGER_ENDPOINT]: parseInt(process.env.SWAGGER_ENDPOINT) || '/api-docs',
 });

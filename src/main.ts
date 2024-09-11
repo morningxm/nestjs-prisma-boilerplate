@@ -8,6 +8,7 @@ import 'winston-daily-rotate-file';
 
 import { AppModule } from './app.module';
 import { ENV, LOGGER_TYPE } from './shared/enums';
+import { setupSwagger } from './swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -54,8 +55,9 @@ async function bootstrap() {
     }),
   );
 
-  const port = configService.get(ENV.APP_PORT);
+  setupSwagger(app);
 
+  const port = configService.get(ENV.APP_PORT);
   await app.listen(port);
 
   const logger = new Logger();
