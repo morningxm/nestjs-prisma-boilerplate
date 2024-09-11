@@ -20,7 +20,7 @@ export class BookDto {
 
   @IsEnum(Genre)
   @IsOptional()
-  genre?: string;
+  genre?: Genre;
 
   @Transform(({ value }) => new Date(value))
   @IsDate()

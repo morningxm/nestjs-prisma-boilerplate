@@ -15,7 +15,7 @@ export class BookmarkController {
 
   @Get(':id')
   async getById(@Param('id') id: string) {
-    const data = await this.bookmarkService.findOne(id);
+    const data = await this.bookmarkService.findOne({ id });
     if (!data) {
       throw new NotFoundException();
     }
@@ -29,13 +29,13 @@ export class BookmarkController {
 
   @Put(':id')
   async update(@Param('id') id: string, @Body() bookmark: Partial<BookmarkDto>) {
-    return this.bookmarkService.updateOne(id, bookmark);
+    return this.bookmarkService.updateOne({ id }, bookmark);
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string) {
     try {
-      return await this.bookmarkService.deleteOne(id);
+      return await this.bookmarkService.deleteOne({ id });
     } catch (err) {
       throw new NotFoundException();
     }

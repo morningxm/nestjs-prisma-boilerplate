@@ -3,8 +3,10 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { redisStore } from 'cache-manager-redis-yet';
 
+import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { CoreModule } from './modules/core/core.module';
 import { FeaturesModule } from './modules/features/features.module';
+import { UserModule } from './modules/user/user.module';
 import { Configuration } from './shared/config';
 import { CACHE_TYPE, ENV } from './shared/enums';
 import { RequestLoggerMiddleware } from './shared/middlewares';
@@ -35,7 +37,9 @@ import { RequestLoggerMiddleware } from './shared/middlewares';
       },
     }),
     CoreModule,
+    AuthenticationModule.forRoot(),
     FeaturesModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],

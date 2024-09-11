@@ -15,7 +15,7 @@ export class BookController {
 
   @Get(':id')
   async getById(@Param('id') id: string) {
-    const data = await this.bookService.findOne(id);
+    const data = await this.bookService.findOne({ id });
     if (!data) {
       throw new NotFoundException();
     }
@@ -29,13 +29,14 @@ export class BookController {
 
   @Put(':id')
   async update(@Param('id') id: string, @Body() book: Partial<BookDto>) {
-    return this.bookService.updateOne(id, book);
+    console.log(book, 'book');
+    return this.bookService.updateOne({ id }, book);
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string) {
     try {
-      return await this.bookService.deleteOne(id);
+      return await this.bookService.deleteOne({ id });
     } catch (err) {
       throw new NotFoundException();
     }

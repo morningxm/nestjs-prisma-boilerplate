@@ -27,11 +27,9 @@ export class BookService {
     });
   }
 
-  async findOne(id: string): Promise<Book | null> {
+  async findOne(where): Promise<Book | null> {
     return this.prisma.book.findUnique({
-      where: {
-        id,
-      },
+      where,
       include: {
         bookmarks: true,
       },
@@ -44,16 +42,16 @@ export class BookService {
     });
   }
 
-  async updateOne(id: string, data: Partial<Book>) {
+  async updateOne(where, data: Partial<Book>) {
     return this.prisma.book.update({
-      where: { id },
+      where,
       data,
     });
   }
 
-  async deleteOne(id: string) {
+  async deleteOne(where) {
     return this.prisma.book.delete({
-      where: { id },
+      where,
     });
   }
 }
