@@ -3,6 +3,7 @@ import { Logger, MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { redisStore } from 'cache-manager-redis-yet';
 
+import { WebsocketGatewayModule } from './gateways/websocket.gateway.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CoreModule } from './modules/core/core.module';
 import { FeaturesModule } from './modules/features/features.module';
@@ -40,6 +41,7 @@ import { RequestLoggerMiddleware } from './shared/middlewares';
     AuthModule,
     FeaturesModule,
     UserModule,
+    WebsocketGatewayModule,
   ],
   controllers: [],
   providers: [Logger],
