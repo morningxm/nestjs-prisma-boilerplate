@@ -3,7 +3,7 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User as UserSchema } from '@prisma/client';
 
 import { UserService } from '@/modules/user/user.service';
-import { ApiBadRequest, ApiUnAuthorized, User } from '@/shared/decorators';
+import { ApiMyResponse, User } from '@/shared/decorators';
 import { CreateUserDto, LoginDto, LoginSuccessDto, UserDto } from '@/shared/dtos';
 import { LocalAuthGuard } from '@/shared/guards';
 
@@ -18,15 +18,13 @@ export class AuthController {
   ) {}
 
   @Post('login')
-  @ApiOperation({
-    summary: 'Login with email/password',
-  })
+  @ApiOperation({ summary: 'Login with email/password' })
   @UseGuards(LocalAuthGuard)
   @ApiBody({
     type: LoginDto,
   })
-  @ApiResponse({ status: 200, type: LoginSuccessDto })
-  @ApiUnAuthorized()
+  @ApiMyResponse({ status: 200, type: LoginSuccessDto })
+  @ApiMyResponse({ status: 401 })
   async login(@User() user: UserSchema): Promise<any> {
     return this.authService.login(user);
   }
@@ -36,8 +34,8 @@ export class AuthController {
     summary: 'Register a new user',
   })
   @ApiBody({ type: CreateUserDto })
-  @ApiResponse({ status: 201, type: UserDto })
-  @ApiBadRequest()
+  @ApiMyResponse({ status: 201, type: UserDto })
+  @ApiMyResponse({ status: 400 })
   async signup(@Body() body: CreateUserDto) {
     return this.userService.save(body);
   }

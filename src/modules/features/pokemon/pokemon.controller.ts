@@ -1,6 +1,8 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+import { ApiMyResponse } from '@/shared/decorators';
+
 import { PokemonService } from './pokemon.service';
 
 @Controller('pokemon')
@@ -12,6 +14,7 @@ export class PokemonController {
   @ApiOperation({
     summary: 'Get a Pokemon',
   })
+  @ApiMyResponse()
   async getPokemon(@Param('id') id: number) {
     return await this.service.getPokemon(+id);
   }

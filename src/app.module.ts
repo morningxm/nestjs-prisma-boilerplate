@@ -1,7 +1,9 @@
 import { CacheModule } from '@nestjs/cache-manager';
 import { Logger, MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { redisStore } from 'cache-manager-redis-yet';
+import { join } from 'path';
 
 import { WebsocketGatewayModule } from './gateways/websocket.gateway.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -42,6 +44,10 @@ import { RequestLoggerMiddleware } from './shared/middlewares';
     FeaturesModule,
     UserModule,
     WebsocketGatewayModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+      serveRoot: '/assets',
+    }),
   ],
   controllers: [],
   providers: [Logger],
