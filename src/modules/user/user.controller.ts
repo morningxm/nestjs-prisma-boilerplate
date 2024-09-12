@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-import { ApiBadRequest, ApiNotFound } from '@/shared/decorators';
+import { ApiMyResponse } from '@/shared/decorators';
 import { CreateUserDto, UserDto } from '@/shared/dtos';
 import { JwtAuthGuard } from '@/shared/guards';
 
@@ -27,27 +27,16 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @ApiOperation({
-    summary: 'Get all users',
-  })
-  @ApiResponse({
-    status: 200,
-    type: UserDto,
-    isArray: true,
-  })
+  @ApiOperation({ summary: 'Get all users' })
+  @ApiMyResponse({ status: 200, type: [UserDto] })
   async getAll() {
     return this.userService.find({});
   }
 
   @Get(':id')
-  @ApiOperation({
-    summary: 'Get a user by Id',
-  })
-  @ApiResponse({
-    status: 200,
-    type: UserDto,
-  })
-  @ApiNotFound()
+  @ApiOperation({ summary: 'Get a user by Id' })
+  @ApiMyResponse({ status: 200, type: UserDto })
+  @ApiMyResponse({ status: 404 })
   async getById(@Param('id') id: string, @Headers() req) {
     const data = await this.userService.findOne({ id });
     if (!data) {
@@ -57,17 +46,10 @@ export class UserController {
   }
 
   @Post()
-  @ApiOperation({
-    summary: 'Create a new user',
-  })
-  @ApiBody({
-    type: CreateUserDto,
-  })
-  @ApiResponse({
-    status: 201,
-    type: UserDto,
-  })
-  @ApiBadRequest()
+  @ApiOperation({ summary: 'Create a new user' })
+  @ApiBody({ type: CreateUserDto })
+  @ApiMyResponse({ status: 201, type: UserDto })
+  @ApiMyResponse({ status: 400 })
   async create(@Body() data: CreateUserDto) {
     if (!data) throw new BadRequestException('Missing some information');
 
@@ -75,17 +57,10 @@ export class UserController {
   }
 
   @Put(':id')
-  @ApiOperation({
-    summary: 'Update a user by Id',
-  })
-  @ApiBody({
-    type: CreateUserDto,
-  })
-  @ApiResponse({
-    status: 200,
-    type: UserDto,
-  })
-  @ApiNotFound()
+  @ApiOperation({ summary: 'Update a user by Id' })
+  @ApiBody({ type: CreateUserDto })
+  @ApiMyResponse({ status: 200, type: UserDto })
+  @ApiMyResponse({ status: 404 })
   async update(@Param('id') id: string, @Body() data: Partial<CreateUserDto>) {
     if (!data) throw new BadRequestException('Missing some information');
 
@@ -93,14 +68,9 @@ export class UserController {
   }
 
   @Delete(':id')
-  @ApiOperation({
-    summary: 'Delete a user by Id',
-  })
-  @ApiResponse({
-    status: 200,
-    type: UserDto,
-  })
-  @ApiNotFound()
+  @ApiOperation({ summary: 'Delete a user by Id' })
+  @ApiMyResponse({ status: 200, type: UserDto })
+  @ApiMyResponse({ status: 404 })
   async delete(@Param('id') id: string) {
     try {
       return await this.userService.deleteOne({ id });
