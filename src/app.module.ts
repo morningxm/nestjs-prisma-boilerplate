@@ -8,6 +8,7 @@ import { join } from 'path';
 import { WebsocketGatewayModule } from './gateways/websocket.gateway.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CoreModule } from './modules/core/core.module';
+import { queueConfig } from './modules/core/queue/queue.config';
 import { FeaturesModule } from './modules/features/features.module';
 import { UserModule } from './modules/user/user.module';
 import { Configuration } from './shared/config';
@@ -39,6 +40,7 @@ import { RequestLoggerMiddleware } from './shared/middlewares';
             };
       },
     }),
+    queueConfig,
     CoreModule,
     AuthModule,
     FeaturesModule,
