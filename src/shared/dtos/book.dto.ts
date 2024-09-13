@@ -15,43 +15,29 @@ enum Genre {
 
 export class BookDto {
   @IsMongoId()
-  @ApiProperty({
-    description: 'ID',
-    default: '66e1c5a0809bae0741157574',
-  })
+  @ApiProperty({ description: 'ID', default: '66e1c5a0809bae0741157574' })
   id: string;
 
   @IsString()
   @MaxLength(100)
-  @ApiProperty({
-    description: 'Title',
-    default: 'If tomorrow comes',
-  })
+  @ApiProperty({ description: 'Title', default: 'If tomorrow comes' })
   title: string;
 
   @IsString()
   @MaxLength(100)
-  @ApiProperty({
-    description: 'Author',
-    default: 'Sydney Shelden',
-  })
+  @ApiProperty({ description: 'Author', default: 'Sydney Shelden' })
   author: string;
 
   @IsEnum(Genre)
   @IsOptional()
-  @ApiProperty({
-    description: 'Genre',
-    default: Genre.fantasy,
-  })
+  @ApiProperty({ description: 'Genre', enum: Genre })
   genre?: Genre;
 
   @Transform(({ value }) => new Date(value))
   @IsDate()
   @MaxDate(() => new Date())
   @IsOptional()
-  @ApiProperty({
-    description: 'Publication Year',
-  })
+  @ApiProperty({ description: 'Publication Year' })
   publicationYear?: Date;
 }
 
@@ -59,10 +45,6 @@ export class CreateBookDto extends OmitType(BookDto, ['id']) {}
 
 export class ExtendedBookDto extends BookDto {
   @IsArray()
-  @ApiProperty({
-    description: 'Bookmarks',
-    type: () => BookmarkDto,
-    isArray: true,
-  })
+  @ApiProperty({ description: 'Bookmarks', type: () => BookmarkDto, isArray: true })
   bookmarks: Bookmark[];
 }

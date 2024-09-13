@@ -68,6 +68,9 @@ importers:
       class-validator:
         specifier: ^0.14.1
         version: 0.14.1
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       nest-winston:
         specifier: ^1.9.7
         version: 1.9.7(@nestjs/common@10.4.1(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(winston@3.14.2)
@@ -120,6 +123,9 @@ importers:
       '@types/jsonwebtoken':
         specifier: ^9.0.6
         version: 9.0.6
+      '@types/lodash':
+        specifier: ^4.17.7
+        version: 4.17.7
       '@types/node':
         specifier: ^20.3.1
         version: 20.16.1
@@ -957,6 +963,9 @@ packages:
 
   '@types/jsonwebtoken@9.0.6':
     resolution: {integrity: sha512-/5hndP5dCjloafCXns6SZyESp3Ldq7YjH3zwzwczYnjxIT0Fqzk5ROSYVGfFyczIue7IUEj8hkvLbPoLQ18vQw==}
+
+  '@types/lodash@4.17.7':
+    resolution: {integrity: sha512-8wTvZawATi/lsmNu10/j2hk1KEP0IvjubqPE3cu1Xz7xfXXt5oCq3SNUz4fMIP4XGF9Ky+Ue2tBA3hcS7LSBlA==}
 
   '@types/methods@1.1.4':
     resolution: {integrity: sha512-ymXWVrDiCxTBE3+RIrrP533E70eA+9qu7zdWoHuOmGujkYtzf4HQF96b8nwHLqhuf4ykX61IGRIB38CC6/sImQ==}
@@ -4536,6 +4545,8 @@ snapshots:
   '@types/jsonwebtoken@9.0.6':
     dependencies:
       '@types/node': 20.16.1
+
+  '@types/lodash@4.17.7': {}
 
   '@types/methods@1.1.4': {}
 
