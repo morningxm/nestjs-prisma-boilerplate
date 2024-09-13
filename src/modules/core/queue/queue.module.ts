@@ -8,9 +8,9 @@ export class QueueModule extends ConfigurableModuleClass {
   static register(options: typeof OPTIONS_TYPE): DynamicModule {
     const bullModules = options.queues.map((name) => BullModule.registerQueue({ name }));
 
-    const flowProducers = (options.flows || []).map((flow) =>
+    const flowProducers = (options.flows || []).map((name) =>
       BullModule.registerFlowProducer({
-        name: flow,
+        name,
       }),
     );
 

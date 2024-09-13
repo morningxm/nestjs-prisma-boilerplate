@@ -1,3 +1,4 @@
+import { BullModule } from '@nestjs/bullmq';
 import { CacheModule } from '@nestjs/cache-manager';
 import { Logger, MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -8,7 +9,6 @@ import { join } from 'path';
 import { WebsocketGatewayModule } from './gateways/websocket.gateway.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CoreModule } from './modules/core/core.module';
-import { queueConfig } from './modules/core/queue/queue.config';
 import { FeaturesModule } from './modules/features/features.module';
 import { UserModule } from './modules/user/user.module';
 import { Configuration } from './shared/config';
@@ -40,7 +40,23 @@ import { RequestLoggerMiddleware } from './shared/middlewares';
             };
       },
     }),
-    queueConfig,
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => {
+        return {
+          connection: {
+            host: configService.get(ENV.REDIS_HOST),
+            port: configService.get(ENV.REDIS_PORT),
+          },
+          defaultJobOptions: {
+            removeOnComplete: 1000,
+            removeOnFail: 5000,
+            attempts: 3,
+          },
+        };
+      },
+    }),
     CoreModule,
     AuthModule,
     FeaturesModule,
