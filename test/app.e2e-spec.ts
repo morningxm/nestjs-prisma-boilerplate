@@ -2,8 +2,8 @@ import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 
-import { AppModule } from '@/app.module';
-import { EntityService } from '@/modules/features/entity/entity.service';
+import { EntityService } from '@/web/features/entity/entity.service';
+import { WebModule } from '@/web/web.module';
 
 describe('EntityController (e2e)', () => {
   let app: INestApplication;
@@ -11,7 +11,7 @@ describe('EntityController (e2e)', () => {
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [WebModule],
     })
       .overrideProvider(EntityService)
       .useValue(mockEntityService)
