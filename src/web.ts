@@ -1,6 +1,7 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import * as chalk from 'chalk';
 import { WinstonModule } from 'nest-winston';
 import 'reflect-metadata';
 import { format, transports } from 'winston';
@@ -15,32 +16,35 @@ async function bootstrap() {
 
   const configService = web.get(ConfigService);
 
-  if (configService.get(ENV.LOGGER) == LOGGER_TYPE.WINSTON) {
+  if (configService.get(ENV.LOGGER_TYPE) == LOGGER_TYPE.WINSTON) {
+    const maxFiles = configService.get(ENV.LOGGER_MAX_FILES);
+    const datePattern = 'YYYY-MM-DD';
     web.useLogger(
       WinstonModule.createLogger({
         transports: [
           new transports.DailyRotateFile({
-            filename: `logs/%DATE%-error.log`,
+            filename: `logs/%DATE%-web-error.log`,
             level: 'error',
-            format: format.combine(format.timestamp(), format.json()),
-            datePattern: 'YYYY-MM-DD',
+            format: format.combine(format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), format.json()),
+            datePattern: datePattern,
             zippedArchive: false,
-            maxFiles: '30d',
+            maxFiles,
           }),
           new transports.DailyRotateFile({
-            filename: `logs/%DATE%-combined.log`,
-            format: format.combine(format.timestamp(), format.json()),
-            datePattern: 'YYYY-MM-DD',
+            filename: `logs/%DATE%-web-combined.log`,
+            format: format.combine(format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), format.json()),
+            datePattern: datePattern,
             zippedArchive: false,
-            maxFiles: '30d',
+            maxFiles,
           }),
           new transports.Console({
             format: format.combine(
-              format.cli(),
-              format.splat(),
-              format.timestamp(),
+              // format.cli(),
+              // format.splat(),
+              format.colorize({ all: true }),
+              format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
               format.printf((info) => {
-                return `${info.timestamp} ${info.level}: ${info.message}`;
+                return `${chalk.green(`[Nest] ${process.pid}`)}\t${info.timestamp}\t${info.level} [${chalk.yellow(info.context || 'App')}] ${info.message}${info.level.match('error') ? '\n' + info.stack : ''}`;
               }),
             ),
           }),

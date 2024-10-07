@@ -62,6 +62,9 @@ importers:
       cache-manager-redis-yet:
         specifier: ^5.1.4
         version: 5.1.4
+      chalk:
+        specifier: '4'
+        version: 4.1.2
       class-transformer:
         specifier: ^0.5.1
         version: 0.5.1
@@ -114,6 +117,9 @@ importers:
       '@types/bcrypt':
         specifier: ^5.0.2
         version: 5.0.2
+      '@types/chalk':
+        specifier: ^2.2.0
+        version: 2.2.0
       '@types/express':
         specifier: ^4.17.17
         version: 4.17.21
@@ -909,6 +915,10 @@ packages:
 
   '@types/body-parser@1.19.5':
     resolution: {integrity: sha512-fB3Zu92ucau0iQ0JMCFQE7b/dv8Ot07NI3KaZIkIUNXq82k4eBAqUaneXfleGY9JWskeS9y+u0nXMyspcuQrCg==}
+
+  '@types/chalk@2.2.0':
+    resolution: {integrity: sha512-1zzPV9FDe1I/WHhRkf9SNgqtRJWZqrBWgu7JGveuHmmyR9CnAPCie2N/x+iHrgnpYBIcCJWHBoMRv2TRWktsvw==}
+    deprecated: This is a stub types definition for chalk (https://github.com/chalk/chalk). chalk provides its own type definitions, so you don't need @types/chalk installed!
 
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
@@ -4476,6 +4486,10 @@ snapshots:
     dependencies:
       '@types/connect': 3.4.38
       '@types/node': 20.16.1
+
+  '@types/chalk@2.2.0':
+    dependencies:
+      chalk: 4.1.2
 
   '@types/connect@3.4.38':
     dependencies:
