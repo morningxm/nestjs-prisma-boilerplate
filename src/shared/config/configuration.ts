@@ -13,7 +13,7 @@ export const Configuration = () => ({
   [ENV.REDIS_HOST]: process.env.REDIS_HOST || '127.0.0.1',
   [ENV.REDIS_PORT]: parseInt(process.env.REDIS_PORT) || 6379,
 
-  [ENV.LOGGER]: parseInt(process.env.LOGGER) || 'winston',
+  [ENV.LOGGER_TYPE]: parseInt(process.env.LOGGER) || 'winston',
 
   [ENV.SWAGGER_TITLE]: parseInt(process.env.SWAGGER_TITLE) || 'Nest.js boilerplate',
   [ENV.SWAGGER_DESCRIPTION]: parseInt(process.env.SWAGGER_DESCRIPTION) || 'Nest.js boilerplate',
