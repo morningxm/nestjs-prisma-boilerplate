@@ -43,7 +43,7 @@ async function bootstrap() {
               format.colorize({ all: true }),
               format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
               format.printf((info) => {
-                return `${chalk.green(`[Nest] ${process.pid}`)}\t${info.timestamp}\t${info.level} [${chalk.yellow(info.context || 'App')}] ${info.message}${info.level.match('error') ? '\n' + info.stack : ''}`;
+                return `${chalk.green(`[Nest] ${process.pid}`)}\t${info.timestamp}\t${info.level} [${chalk.yellow(info.context || 'Worker')}] ${info.message}${info.level.match('error') ? '\n' + info.stack : ''}`;
               }),
             ),
           }),
@@ -52,10 +52,9 @@ async function bootstrap() {
     );
   }
 
-  const port = configService.get(ENV.APP_PORT);
-  await worker.listen(6000);
+  worker.init();
 
   const logger = new Logger();
-  logger.log(`Application is running on: ${await worker.getUrl()}`);
+  logger.log(`Worker is running`);
 }
 bootstrap();
