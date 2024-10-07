@@ -12,14 +12,14 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  createToken(email: string, ttl?: number) {
-    const user = { email };
-    const token = this.jwtService.sign(user);
+  // createToken(email: string, ttl?: number) {
+  //   const user = { email };
+  //   const token = this.jwtService.sign(user);
 
-    return {
-      token,
-    };
-  }
+  //   return {
+  //     token,
+  //   };
+  // }
 
   async validateUser({ email, password }: { email: string; password: string }): Promise<any> {
     const user = await this.userService.findByEmail(email);
@@ -36,7 +36,7 @@ export class AuthService {
     return user;
   }
 
-  async login(user: User) {
+  async login(user: Pick<User, 'email' | 'id'>) {
     const payload = { email: user.email, sub: user.id };
     return {
       token: this.jwtService.sign(payload),

@@ -14,11 +14,12 @@
     "start:prod": "node build/main",
     "prisma:generate": "prisma generate",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest --config ./test/jest.json",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test": "jest --config ./test/jest.json --forceExit",
+    "test:watch": "jest --watch --config ./test/jest.json --forceExit",
+    "test:cov": "jest --coverage --config ./test/jest.json --forceExit",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand --config ./test/jest.json --forceExit",
+    "test:e2e": "jest --config ./test/jest-e2e.json --forceExit",
+    "test:e2e:watch": "jest --watch --config ./test/jest-e2e.json --forceExit"
   },
   "dependencies": {
     "@nestjs/axios": "^3.0.3",

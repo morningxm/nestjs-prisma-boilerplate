@@ -30,14 +30,12 @@ export class AuthController {
   })
   @ApiMyResponse({ status: 200, type: LoginSuccessDto })
   @ApiMyResponse({ status: 401 })
-  async login(@User() user: UserSchema): Promise<any> {
+  async login(@User() user): Promise<any> {
     return this.authService.login(user);
   }
 
   @Post('signup')
-  @ApiOperation({
-    summary: 'Register a new user',
-  })
+  @ApiOperation({ summary: 'Register a new user' })
   @ApiBody({ type: CreateUserDto })
   @ApiMyResponse({ status: 201, type: UserDto })
   @ApiMyResponse({ status: 400 })

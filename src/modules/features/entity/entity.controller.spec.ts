@@ -1,5 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { CoreModule } from '@/modules/core/core.module';
+
 import { EntityController } from './entity.controller';
 import { EntityService } from './entity.service';
 
@@ -8,6 +10,7 @@ describe('EntityController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [CoreModule],
       controllers: [EntityController],
       providers: [EntityService],
     }).compile();
@@ -17,5 +20,10 @@ describe('EntityController', () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
+  });
+
+  it('should be able to get entities', async () => {
+    const data = await controller.getAll();
+    expect(data).toBeDefined();
   });
 });

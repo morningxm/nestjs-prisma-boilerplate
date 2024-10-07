@@ -3,14 +3,19 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 
 import { AppModule } from '@/app.module';
+import { EntityService } from '@/modules/features/entity/entity.service';
 
-describe('AppController (e2e)', () => {
+describe('EntityController (e2e)', () => {
   let app: INestApplication;
+  const mockEntityService = { find: () => ['test'] };
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(EntityService)
+      .useValue(mockEntityService)
+      .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
@@ -20,7 +25,8 @@ describe('AppController (e2e)', () => {
     await app.close(); // Ensure application is closed after all tests
   });
 
-  it('/books (GET)', () => {
-    return request(app.getHttpServer()).get('/books').expect(200);
+  it('/entities (GET)', () => {
+    const res = request(app.getHttpServer()).get('/entities');
+    return res.expect(200).expect(mockEntityService.find());
   });
 });
