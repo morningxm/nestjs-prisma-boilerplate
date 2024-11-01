@@ -11,10 +11,9 @@ import { Configuration } from '@/shared/config';
 import { CACHE_TYPE, ENV } from '@/shared/enums';
 import { RequestLoggerMiddleware } from '@/shared/middlewares';
 
-import { AuthModule } from './auth/auth.module';
+import { AdminModule } from './admin/admin.module';
 import { CoreModule } from './core/core.module';
 import { FeaturesModule } from './features/features.module';
-import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -59,13 +58,12 @@ import { UserModule } from './user/user.module';
       },
     }),
     CoreModule,
-    AuthModule,
     FeaturesModule,
-    UserModule,
+    AdminModule,
     WebsocketGatewayModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'),
-      serveRoot: '/assets',
+      rootPath: join(__dirname, '../..', 'public'),
+      serveRoot: '/',
     }),
   ],
   controllers: [],

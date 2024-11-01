@@ -1,7 +1,16 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { Bookmark } from '@prisma/client';
 import { Transform } from 'class-transformer';
-import { IsArray, IsDate, IsEnum, IsMongoId, IsOptional, IsString, MaxDate, MaxLength } from 'class-validator';
+import {
+  IsArray,
+  IsDate,
+  IsEnum,
+  IsMongoId,
+  IsOptional,
+  IsString,
+  MaxDate,
+  MaxLength,
+} from 'class-validator';
 
 import { BookmarkDto } from './bookmark.dto';
 

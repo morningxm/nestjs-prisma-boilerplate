@@ -23,7 +23,9 @@ export abstract class WorkerHostProcessor extends WorkerHost {
   @OnWorkerEvent('failed')
   onFailed(job: Job) {
     const { id, name, queueName, failedReason } = job;
-    this.logger.error(`Job id: ${id}, name: ${name} failed in queue ${queueName}. Failed reason: ${failedReason}`);
+    this.logger.error(
+      `Job id: ${id}, name: ${name} failed in queue ${queueName}. Failed reason: ${failedReason}`,
+    );
   }
 
   @OnWorkerEvent('active')
