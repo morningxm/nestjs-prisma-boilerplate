@@ -1,0 +1,24 @@
+name: Enforce PR Rules
+
+on:
+  pull_request:
+    branches:
+      - staging
+      - main
+
+jobs:
+  enforce-pr-rules:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR base branch and enforce rules
+        run: |
+          TARGET_BRANCH="${{ github.base_ref }}"
+          SOURCE_BRANCH="${{ github.head_ref }}"
+
+          if [[ "$TARGET_BRANCH" == "staging" && "$SOURCE_BRANCH" != "develop" ]]; then
+            echo "PR to 'staging' must come from 'develop'."
+            exit 1
+          elif [[ "$TARGET_BRANCH" == "main" && "$SOURCE_BRANCH" != "staging" ]]; then
+            echo "PR to 'main' must come from 'staging'."
+            exit 1
+          fi
