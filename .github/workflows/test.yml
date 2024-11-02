@@ -1,0 +1,80 @@
+name: Run Tests
+
+on:
+  # push:
+  #   branches:
+  #     - main
+  #     - staging
+  #     - develop
+  pull_request:
+    branches:
+      - develop
+
+env:
+  APP_PORT: ${{ secrets.APP_PORT }}
+  SECRET: ${{ secrets.SECRET }}
+  TOKEN_EXPIRE_IN: ${{ secrets.TOKEN_EXPIRE_IN }}
+
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+  CACHE_MODE: ${{ secrets.CACHE_MODE }}
+  CACHE_TTL: ${{ secrets.CACHE_TTL }}
+
+  REDIS_HOST: redis
+  REDIS_PORT: 6379
+
+  LOGGER_TYPE: ${{ secrets.LOGGER_TYPE }}
+  LOGGER_MAX_FILES: ${{ secrets.LOGGER_MAX_FILES }}
+
+  SWAGGER_TITLE: ${{ secrets.SWAGGER_TITLE }}
+  SWAGGER_DESCRIPTION: ${{ secrets.SWAGGER_DESCRIPTION }}
+  SWAGGER_VERSION: ${{ secrets.SWAGGER_VERSION }}
+  SWAGGER_FAVICON: ${{ secrets.SWAGGER_FAVICON }}
+  SWAGGER_ENDPOINT: ${{ secrets.SWAGGER_ENDPOINT }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: node:20.17.0-alpine
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    defaults:
+      run:
+        working-directory: ./src
+
+    strategy:
+      matrix:
+        node-version: [20]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Run prisma:generate
+        run: yarn prisma:generate
+
+      - name: Run lint
+        run: yarn lint
+
+      - name: Run unit tests
+        run: yarn test
+
+      - name: Run e2e tests
+        run: yarn test:e2e
+
+      - name: Run build
+        run: yarn build
