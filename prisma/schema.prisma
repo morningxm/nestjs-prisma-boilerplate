@@ -13,47 +13,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Book {
-  id              String     @id @default(auto()) @map("_id") @db.ObjectId
-  title           String
-  author          String
-  genre           String?
-  publicationYear DateTime   @default(now())
-  bookmarks       Bookmark[]
-  Entity          Entity[]
-
-  @@map("books")
-}
-
-model Bookmark {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  bookId     String   @db.ObjectId
-  book       Book?    @relation(fields: [bookId], references: [id])
-  pageNumber Int
-  notes      String?
-  Entity     Entity[]
-
-  @@map("bookmarks")
-}
-
 model User {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  email    String   @unique
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  email    String  @unique
   password String
   name     String
   gender   String?
-  Entity   Entity[]
 
   @@map("users")
 }
 
-model Entity {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  entityType String
-  entityId   String    @db.ObjectId
-  book       Book?     @relation(fields: [entityId], references: [id])
-  bookmark   Bookmark? @relation(fields: [entityId], references: [id])
-  user       User?     @relation(fields: [entityId], references: [id])
+model Admin {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  email    String  @unique
+  password String
+  name     String
+  gender   String?
 
-  @@map("entities")
+  @@map("admins")
 }

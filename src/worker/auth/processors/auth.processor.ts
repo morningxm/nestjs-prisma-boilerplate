@@ -9,12 +9,13 @@ import { WorkerHostProcessor } from '@/shared/processors';
 @Processor(QUEUE.AUTH_QUEUE)
 @Injectable()
 export class AuthProcessor extends WorkerHostProcessor {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   process(job: Job<UserDto, number, string>): Promise<any> {
-    const { id, email } = job.data;
+    const { email } = job.data;
     switch (job.name) {
       case AUTH_JOB.SEND_SIGNUP_EMAIL:
         // TODO: mockup background job, update to real logic
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
           setTimeout(() => {
             job.updateProgress(50);
           }, 5000);

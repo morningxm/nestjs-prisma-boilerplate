@@ -16,7 +16,7 @@ async function bootstrap() {
 
   const configService = web.get(ConfigService);
 
-  if (configService.get(ENV.LOGGER_TYPE) == LOGGER_TYPE.WINSTON) {
+  if (configService.get<string>(ENV.LOGGER_TYPE) === LOGGER_TYPE.WINSTON) {
     const maxFiles = configService.get(ENV.LOGGER_MAX_FILES);
     const datePattern = 'YYYY-MM-DD';
     web.useLogger(
@@ -25,14 +25,20 @@ async function bootstrap() {
           new transports.DailyRotateFile({
             filename: `logs/%DATE%-web-error.log`,
             level: 'error',
-            format: format.combine(format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), format.json()),
+            format: format.combine(
+              format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+              format.json(),
+            ),
             datePattern: datePattern,
             zippedArchive: false,
             maxFiles,
           }),
           new transports.DailyRotateFile({
             filename: `logs/%DATE%-web-combined.log`,
-            format: format.combine(format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), format.json()),
+            format: format.combine(
+              format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+              format.json(),
+            ),
             datePattern: datePattern,
             zippedArchive: false,
             maxFiles,

@@ -1,6 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function ApiMyResponse(options: { [key in string]: any } = { status: 200 }) {
   if (!options.description) {
     switch (options.status) {

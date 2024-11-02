@@ -1,19 +1,19 @@
 {
-  "name": "nestjs-mongoose-boilerplate",
-  "version": "0.0.1",
+  "name": "pivotal-backend",
+  "version": "1.0.0",
   "description": "",
   "author": "",
   "private": true,
-  "license": "isoftchamp",
+  "license": "Pivotal-Research",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "dev:web": "nest start --watch",
+    "dev": "nest start --watch",
     "dev:worker": "nest start --entryFile worker --watch",
-    "debug:web": "nest start --debug --watch",
+    "debug": "nest start --debug --watch",
     "debug:worker": "nest start --entryFile worker --debug --watch",
-    "prod:web": "node build/web",
+    "prod": "node build/web",
     "prod:worker": "node build/worker",
     "prisma:generate": "prisma generate",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -22,7 +22,14 @@
     "test:cov": "jest --coverage --config ./test/jest.json --forceExit",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand --config ./test/jest.json --forceExit",
     "test:e2e": "jest --config ./test/jest-e2e.json --forceExit",
-    "test:e2e:watch": "jest --watch --config ./test/jest-e2e.json --forceExit"
+    "test:e2e:watch": "jest --watch --config ./test/jest-e2e.json --forceExit",
+    "postinstall": "prisma generate",
+    "pre-commit": "lint-staged",
+    "doppler:dev": "doppler run --config dev -- npm run dev",
+    "doppler:dev:worker": "doppler run --config dev -- npm run dev:worker",
+    "doppler:test": "doppler run --config test -- npm run test",
+    "doppler:test:e2e": "doppler run --config test -- npm run test:e2e",
+    "prepare": "husky"
   },
   "dependencies": {
     "@nestjs/axios": "^3.0.3",
@@ -46,6 +53,7 @@
     "chalk": "4",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "lint-staged": "^15.2.10",
     "lodash": "^4.17.21",
     "nest-winston": "^1.9.7",
     "passport": "^0.7.0",
@@ -77,6 +85,7 @@
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^9.1.6",
     "jest": "^29.5.0",
     "prettier": "^3.0.0",
     "prisma": "^5.19.1",
@@ -105,5 +114,8 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "lint-staged": {
+    "*.ts": "eslint --fix"
   }
 }
