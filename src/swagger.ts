@@ -22,7 +22,7 @@ export function setupSwagger(app: INestApplication) {
   const document = SwaggerModule.createDocument(app, config);
 
   SwaggerModule.setup(configService.get(ENV.SWAGGER_ENDPOINT), app, document, {
-    customCss: ".topbar-wrapper { content:url('/assets/favicon.webp'); height:100px; }",
+    customCss: `.topbar-wrapper { content:url('${favicon}'); height:100px; }`,
     customSiteTitle: title,
     customfavIcon: favicon,
   });

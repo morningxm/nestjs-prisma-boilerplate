@@ -3,8 +3,8 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { CoreModule } from '@/core/core.module';
 import { ENV } from '@/shared/enums';
-import { CoreModule } from '@/web/core/core.module';
 
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
