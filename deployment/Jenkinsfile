@@ -1,0 +1,130 @@
+pipeline {
+    agent any
+    environment {
+        SHORTHASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+        APP_ENV = ''
+    }
+    stages {
+        stage('Get Env') {
+            steps {
+                script {
+                    def BRANCH = env.BRANCH_NAME
+                    // Conditional assignment based on Git branch for APP_ENV
+                    if (BRANCH == 'main') {
+                        APP_ENV = 'prod'
+                    } else if (BRANCH == 'staging') {
+                        APP_ENV = 'staging'
+                    } else {
+                        echo "Unsupported branch: ${BRANCH}"
+                        error("Unsupported branch: ${BRANCH}")
+                    }
+                }
+            }
+        }
+
+        stage('Prepare AWS env') {
+            steps {
+                catchError(buildResult: 'FAILURE') {
+                    sh 'docker system prune -f'
+                    sh 'aws ecr get-login-password --region ap-southeast-1 --profile pivotal | docker login --username AWS --password-stdin 941377123252.dkr.ecr.ap-southeast-1.amazonaws.com'
+                    // sh "aws eks update-kubeconfig --name pivotal-\"$APP_ENV\" --region ap-southeast-1 --profile pivotal"
+                    script {
+                        def eksClusterName = (APP_ENV == 'staging') ? 'allinone-staging' : "pivotal-${APP_ENV}"
+                        sh "aws eks update-kubeconfig --name ${eksClusterName} --region ap-southeast-1 --profile pivotal"
+                    }
+                }
+            }
+        }
+
+        stage('Build & Push') {
+            steps {
+                catchError(buildResult: 'FAILURE') {
+                    sh "docker build --platform=linux/amd64 -t pivotal-api:\"$SHORTHASH\" -f deployment/Dockerfile ."
+                    sh "docker tag pivotal-api:\"$SHORTHASH\" 941377123252.dkr.ecr.ap-southeast-1.amazonaws.com/pivotal-api:\"$SHORTHASH\""
+                    sh "docker push 941377123252.dkr.ecr.ap-southeast-1.amazonaws.com/pivotal-api:\"$SHORTHASH\""
+                }
+            }
+        }
+
+        // Done by doppler
+        // stage('Load environment variables') {
+        //     steps {
+        //         script {
+        //             catchError(buildResult: 'FAILURE') {
+        //                 def configMapName = 'pivotal-env'
+        //                 // Check if the ConfigMap exists
+        //                 def configMapExists = sh(script: "kubectl get configmap ${configMapName} -o name", returnStatus: true)
+
+        //                 if (configMapExists == 0) {
+        //                     // ConfigMap exists, so delete it
+        //                     sh "kubectl delete configmap ${configMapName}"
+        //                 } else {
+        //                     echo "ConfigMap ${configMapName} does not exist, skipping deletion."
+        //                 }
+
+        //                 sh """
+        //                     kubectl create configmap ${configMapName} --from-env-file=/var/lib/jenkins/project/pivotal-api/.env.${APP_ENV}
+        //                     kubectl get configmap ${configMapName} -o yaml > ${configMapName}.yaml
+        //                     kubectl apply -f ${configMapName}.yaml
+        //                 """
+        //             }
+        //         }
+        //     }
+        // }
+
+        stage('Deploy') {
+            steps {
+                catchError(buildResult: 'FAILURE') {
+                    sh """
+                        cat deployment/${APP_ENV}/deployment.yaml | sed 's/{{SHORTHASH}}/${SHORTHASH}/' | kubectl apply -f -
+                    """
+                // sh """
+                //     cat deployment/${APP_ENV}/deployment.worker.yaml | sed 's/{{SHORTHASH}}/${SHORTHASH}/' | kubectl apply -f -
+                // """
+                }
+            }
+        }
+
+        stage('Notify Slack') {
+            steps {
+                script {
+                    def slackChannel = '#dev-feed'
+                    def slackMessage
+                    def prettyAppEnv = (APP_ENV == 'prod') ? 'PRODUCTION' : (APP_ENV == 'staging') ? 'STAGING' : 'Unknown'
+
+                    if (currentBuild.resultIsBetterOrEqualTo('SUCCESS')) {
+                        slackMessage = "<!channel> *PivotalChain.io* - ${prettyAppEnv} API is successfully deployed.\n${env.BUILD_URL}"
+                    } else {
+                        slackMessage = "<!channel> *PivotalChain.io* - ${prettyAppEnv} API is failed.\n${env.BUILD_URL}"
+                    }
+
+                    def attachments = [
+                        [
+                            text: slackMessage,
+                            fallback: slackMessage,
+                            color: currentBuild.resultIsBetterOrEqualTo('SUCCESS') ? 'good' : 'danger'
+                        ]
+                    ]
+
+                    slackSend(channel: slackChannel, attachments: attachments)
+                }
+            }
+        }
+    }
+
+    post {
+        failure {
+            script {
+                def attachments = [
+                    [
+                        text: slackMessage = "<!channel> *PivotalChain.io* - ${prettyAppEnv} API deploy is failed.\n${env.BUILD_URL}",
+                        fallback: slackMessage = "<!channel> *PivotalChain.io* - ${prettyAppEnv} API deploy is failed.\n${env.BUILD_URL}",
+                        color: 'danger'
+                    ]
+                ]
+                currentBuild.result = 'FAILURE'
+                slackSend(channel: slackChannel, attachments: attachments)
+            }
+        }
+    }
+}

@@ -1,13 +1,13 @@
 {
-  "name": "pivotal-backend",
+  "name": "nestjs-prisma-boilerplate",
   "version": "1.0.0",
   "description": "",
   "author": "",
   "private": true,
-  "license": "Pivotal-Research",
+  "license": "isoftchamp",
   "scripts": {
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier --write \"(src|test|prisma)/**/*.(js|mjs|cjs|jsx|ts|json|json5|jsonc|yml|yaml|md|markdown|graphql|gql|ng|sql|prisma)\"",
     "start": "nest start",
     "dev": "nest start --watch",
     "dev:worker": "nest start --entryFile worker --watch",
@@ -88,6 +88,7 @@
     "husky": "^9.1.6",
     "jest": "^29.5.0",
     "prettier": "^3.0.0",
+    "prettier-plugin-prisma": "^5.0.0",
     "prisma": "^5.19.1",
     "socket.io-client": "^4.7.5",
     "source-map-support": "^0.5.21",
@@ -116,6 +117,12 @@
     "testEnvironment": "node"
   },
   "lint-staged": {
-    "*.ts": "eslint --fix"
+    "**/*.{js,mjs,cjs,jsx,ts}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "**/*.{json,json5,jsonc,yml,yaml,md,markdown,graphql,gql,ng,sql,prisma}": [
+      "prettier --write"
+    ]
   }
 }
