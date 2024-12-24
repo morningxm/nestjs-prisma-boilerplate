@@ -1,4 +1,10 @@
 export enum ENV {
+  APP_NAME = 'APP_NAME',
+  APP_ENV = 'APP_ENV',
+  IS_DEV = 'IS_DEV',
+  IS_STG = 'IS_STG',
+  IS_PRD = 'IS_PRD',
+  IS_TEST = 'IS_TEST',
   APP_PORT = 'APP_PORT',
   SECRET = 'SECRET',
   ADMIN_SECRET = 'ADMIN_SECRET',
@@ -9,8 +15,7 @@ export enum ENV {
   CACHE_MODE = 'CACHE_MODE',
   CACHE_TTL = 'CACHE_TTL',
 
-  REDIS_HOST = 'REDIS_HOST',
-  REDIS_PORT = 'REDIS_PORT',
+  REDIS_URL = 'REDIS_URL',
 
   LOGGER_TYPE = 'LOGGER_TYPE',
   LOGGER_MAX_FILES = 'LOGGER_MAX_FILES',
@@ -29,4 +34,11 @@ export enum CACHE_TYPE {
 
 export enum LOGGER_TYPE {
   WINSTON = 'winston',
+}
+
+export enum APP_ENV {
+  DEV = 'dev',
+  STG = 'stg',
+  PRD = 'prd',
+  TEST = 'test',
 }

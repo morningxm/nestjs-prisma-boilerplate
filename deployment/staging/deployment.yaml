@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nestjs-prisma-api
+  namespace: default
+  labels:
+    app: nestjs-prisma-api
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 50%
+  selector:
+    matchLabels:
+      app: nestjs-prisma-api
+  template:
+    metadata:
+      labels:
+        app: nestjs-prisma-api
+    spec:
+      containers:
+        - name: nestjs-prisma-api
+          image: qwertroot122/nestjs-prisma-api:{{SHORTHASH}}
+          envFrom:
+            - secretRef:
+                name: nestjs-prisma-staging
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5600
+          args: ['yarn', 'prod']
+          readinessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 5600
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1

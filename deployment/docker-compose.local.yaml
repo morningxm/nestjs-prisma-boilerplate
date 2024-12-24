@@ -1,0 +1,26 @@
+services:
+  redis:
+    image: 'redis'
+    networks:
+      - es-net
+  api:
+    env_file: ./.env
+    build:
+      context: ..
+      dockerfile: ./deployment/Dockerfile
+    image: 'nestjs-prisma-api'
+    volumes:
+      - ./src:/app/src
+      - /var/log/nestjs-prisma:/var/log/nestjs-prisma
+    ports:
+      - '5100:5100'
+    links:
+      - 'redis'
+    networks:
+      - es-net
+    depends_on:
+      - 'redis'
+
+networks:
+  es-net:
+    driver: bridge

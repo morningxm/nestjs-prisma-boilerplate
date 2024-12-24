@@ -20,8 +20,7 @@ env:
   CACHE_MODE: ${{ secrets.CACHE_MODE }}
   CACHE_TTL: ${{ secrets.CACHE_TTL }}
 
-  REDIS_HOST: redis
-  REDIS_PORT: 6379
+  REDIS_URL: ${{ secrets.REDIS_URL }}
 
   LOGGER_TYPE: ${{ secrets.LOGGER_TYPE }}
   LOGGER_MAX_FILES: ${{ secrets.LOGGER_MAX_FILES }}

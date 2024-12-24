@@ -1,0 +1,9 @@
+model User {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  email    String  @unique
+  password String
+  name     String
+  gender   String?
+
+  @@map("users")
+}
