@@ -1,6 +1,12 @@
-import { ENV } from '@/shared/enums';
+import { APP_ENV, ENV } from '@/shared/enums';
 
 export const Configuration = () => ({
+  [ENV.APP_NAME]: process.env.APP_NAME || 'pivotal-backend',
+  [ENV.APP_ENV]: process.env.APP_ENV || APP_ENV.DEV,
+  [ENV.IS_PRD]: process.env.APP_ENV === APP_ENV.PRD,
+  [ENV.IS_TEST]: process.env.APP_ENV === APP_ENV.TEST,
+  [ENV.IS_STG]: process.env.APP_ENV === APP_ENV.STG,
+  [ENV.IS_DEV]: process.env.APP_ENV === APP_ENV.DEV,
   [ENV.APP_PORT]: parseInt(process.env.APP_PORT) || 3000,
   [ENV.SECRET]: process.env.SECRET || 'SECRET',
   [ENV.TOKEN_EXPIRE_IN]: process.env.TOKEN_EXPIRE_IN || '1h',
@@ -10,8 +16,7 @@ export const Configuration = () => ({
   [ENV.CACHE_MODE]: process.env.CACHE_MODE || 'redis',
   [ENV.CACHE_TTL]: process.env.CACHE_TTL || 30,
 
-  [ENV.REDIS_HOST]: process.env.REDIS_HOST || '127.0.0.1',
-  [ENV.REDIS_PORT]: parseInt(process.env.REDIS_PORT) || 6379,
+  [ENV.REDIS_URL]: process.env.REDIS_URL || 'redis://127.0.0.1:6379',
 
   [ENV.LOGGER_TYPE]: parseInt(process.env.LOGGER) || 'winston',
 
