@@ -7,6 +7,11 @@
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "moduleNameMapper": {
-    "^@/(.*)$": "<rootDir>/../src/$1"
+    "^@/admin/(.*)$": "<rootDir>/../src/web/admin/$1",
+    "^@/gateways/(.*)$": "<rootDir>/../src/gateways/$1",
+    "^@/shared/(.*)$": "<rootDir>/../src/shared/$1",
+    "^@/worker/(.*)$": "<rootDir>/../src/worker/$1",
+    "^@/core/(.*)$": "<rootDir>/../src/core/$1",
+    "^@/(.*)$": "<rootDir>/../src/web/$1"
   }
 }

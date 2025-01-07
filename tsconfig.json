@@ -11,7 +11,11 @@
     "outDir": "./build",
     "baseUrl": "./",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/gateways/*": ["./src/gateways/*"],
+      "@/shared/*": ["./src/shared/*"],
+      "@/worker/*": ["./src/worker/*"],
+      "@/core/*": ["./src/core/*"],
+      "@/*": ["./src/web/*"]
     },
     "incremental": true,
     "skipLibCheck": true,

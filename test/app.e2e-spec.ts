@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 
-import { WebModule } from '@/web/web.module';
+import { WebModule } from '@/web.module';
 
 describe('Application (e2e)', () => {
   let app: INestApplication;
@@ -20,8 +20,8 @@ describe('Application (e2e)', () => {
     await app.close(); // Ensure application is closed after all tests
   });
 
-  it('/ (GET)', () => {
-    const res = request(app.getHttpServer()).get('/');
-    return res.expect(404);
+  it('/healthcheck (GET)', () => {
+    const res = request(app.getHttpServer()).get('/healthcheck');
+    return res.expect(200);
   });
 });
