@@ -1,4 +1,5 @@
-import { Logger, UseGuards } from '@nestjs/common';
+import { Logger, UseFilters } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -9,18 +10,27 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
-import { WsAuthGuard } from '@/shared/guards';
+import { LOGGER_CONTEXT } from '@/shared/enums';
+import { WsExceptionFilter } from '@/shared/filters';
+import { SocketAuthMiddleware } from '@/shared/middlewares';
 
 @WebSocketGateway()
+@UseFilters(WsExceptionFilter)
 export class WebsocketGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger(WebsocketGateway.name);
 
   private clients: Set<Socket> = new Set();
 
-  @WebSocketServer() io: Server;
+  @WebSocketServer() server: Server;
+
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly socketAuthMiddleware: SocketAuthMiddleware,
+  ) {}
 
   afterInit() {
-    this.logger.log(`${WebsocketGateway.name}: Initialized`);
+    this.server.use((socket, next) => this.socketAuthMiddleware.use(socket, next));
+    this.logger.log(`${WebsocketGateway.name}: Initialized`, LOGGER_CONTEXT.GATEWAYS);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,7 +63,6 @@ export class WebsocketGateway implements OnGatewayInit, OnGatewayConnection, OnG
   }
 
   @SubscribeMessage('chat')
-  @UseGuards(WsAuthGuard)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleMessage(client: Socket, data: any) {
     this.logger.log(
