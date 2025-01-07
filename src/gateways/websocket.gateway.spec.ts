@@ -2,11 +2,30 @@ import { INestApplication, Provider } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { Socket, io } from 'socket.io-client';
 
+import { CoreModule } from '@/core/core.module';
+import { AuthModule } from '@/features/auth/auth.module';
+import { SocketAuthMiddleware } from '@/shared/middlewares';
+
 import { WebsocketGateway } from './websocket.gateway';
+
+const mockSocketAuthMiddleware = {
+  use: jest.fn((socket, next) => {
+    // Mock successful authentication and attach a mock user
+    socket.user = { id: '123', email: 'test@example.com' };
+    next();
+  }),
+};
 
 async function createNestApp(...gateways: Provider[]): Promise<INestApplication> {
   const testingModule = await Test.createTestingModule({
-    providers: gateways,
+    imports: [CoreModule, AuthModule],
+    providers: [
+      ...gateways,
+      {
+        provide: SocketAuthMiddleware,
+        useValue: mockSocketAuthMiddleware, // Use the mocked middleware
+      },
+    ],
   }).compile();
   return testingModule.createNestApplication();
 }
